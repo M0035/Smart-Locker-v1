@@ -50,7 +50,7 @@ Item {
                 enabled: stack.depth > 1
                 font.pixelSize:text_size
                 onClicked :{
-                    udpClient.sendMessage('p'+codeNumberField.text+'\0',host,port)
+                   // udpClient.sendMessage('p'+codeNumberField.text+'\0',host,port)
                     stack.pop()
 
                 }
