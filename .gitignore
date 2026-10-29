@@ -1,0 +1,25 @@
+# Build outputs
+*.o
+*.obj
+*.so
+*.a
+*.exe
+*.log
+udp-server/udpServer
+build/
+build-*/
+debug/
+release/
+.qmake.stash
+*.pro.user
+
+# Local data and credentials
+*.db
+*.sqlite
+*.sqlite3
+.env
+.env.*
+*.pem
+*.key
+id_rsa
+id_ed25519
