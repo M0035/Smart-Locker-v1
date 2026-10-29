@@ -30,7 +30,7 @@ init_lockers();
 			perror("recvfrom");
 			exit(EXIT_FAILURE);
 		}
-		if(ret==0||ret>=BUFSIZ){
+		if(ret==0){
 			printf("收到的数据数据错误\n");
 			continue;
 		}

@@ -5,7 +5,9 @@ struct{
 	char company[32];
 }couriers;
 
-int do_login(char *buf){
+int do_login(char *buf)
+//'l'+phoneNumberField.text+'\0'+passwordFiled.text+'\0'
+{
 	char *number=buf;
 	char *passwd=buf+strlen(buf)+1;
 	printf("number:%s \n",number);
@@ -36,14 +38,15 @@ int do_login(char *buf){
 		return -1;
 	}
 
-	strcpy(couriers.company,(char *)sqlite3_column_text(stmt,3));
+	strcpy(couriers.company,(char *)sqlite3_column_text(stmt,3));  //从0开始第三列
 	printf("登陆成功，快递员属于%s \n",couriers.company);
 	sqlite3_finalize(stmt);
 	sqlite3_close(db);
 	strcpy(buf,"ok");
 	return 0;
 }
-int do_register(char *buf){
+int do_register(char *buf)  //'r'+phoneNumberField.text+'\0'+passwordFiled.text+'\0'+company+'\0'
+{
 	char *number=buf;
 	char *passwd=buf+strlen(buf)+1;
 	char *company=passwd+strlen(passwd)+1;
@@ -84,7 +87,8 @@ int do_register(char *buf){
 	strcpy(buf,"ok");
 	return 0;
 }
-int do_pickup(char *buf){
+int do_pickup(char *buf)  //'p'+codeNumberField.text+'\0'
+{
 	//查询取件码是否正确
 	sqlite3 *db;
 	char *pickup_code=buf;
@@ -345,7 +349,9 @@ void init_lockers(){
 			"select new.package_no,new.courier_phone,"
 			"new.delivery_company,new.delivery_time,"
 			"new.recipient_phone,new.pickup_code "
-			"where new.package_no is not NULL;"
+			"WHEN OLD.status = '空闲' "
+			"AND NEW.status = '占用' "
+			"AND NEW.package_no IS NOT NULL " 
 			"end;";
 		rc=sqlite3_exec(db,sql,0,0,&err_msg);
 		if(rc!=SQLITE_OK){
